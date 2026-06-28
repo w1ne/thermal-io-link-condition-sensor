@@ -1,0 +1,5 @@
+part
+ESP32-C3 SuperMini (RISC-V edge classifier)
+MLX90640 32x24 far-infrared thermal camera (I2C)
+M12 5-pin A-coded IO-Link connector
+24V -> 3V3 buck regulator

@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "author": "proto.cat",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "mcu",
+      "top": 0,
+      "left": 0
+    }
+  ],
+  "connections": []
+}

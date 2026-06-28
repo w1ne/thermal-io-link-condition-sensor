@@ -1,0 +1,30 @@
+name: verify
+
+# Re-verifies this build against the open LabWired engine — no proto.cat involved.
+on:
+  push:
+  pull_request:
+
+jobs:
+  labwired:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch the LabWired engine binary (v0.17.3)
+        run: |
+          curl -sSL -o labwired.tar.gz "https://github.com/w1ne/labwired-core/releases/download/v0.17.3/labwired-v0.17.3-linux-x86_64.tar.gz"
+          tar -xzf labwired.tar.gz
+          sudo install -m 0755 labwired /usr/local/bin/labwired
+      - name: Fetch the chip descriptors (v0.17.3)
+        # The binary ships no configs; declarative chips (e.g. esp32c3) need the
+        # configs/{chips,peripherals} tree. sim/system_manifest.yaml points its
+        # chip at ../engine/configs/chips/<id>.yaml.
+        run: git clone --depth 1 --branch v0.17.3 https://github.com/w1ne/labwired-core engine
+      - name: Re-verify the build
+        run: |
+          labwired test \
+            --firmware firmware/firmware.elf \
+            --system sim/system_manifest.yaml \
+            --script sim/test.yaml \
+            --junit report.xml \
+            --no-key

@@ -1,0 +1,26 @@
+name: "esp32c3-mlx90640-thermal-iolink"
+chip: "../engine/configs/chips/esp32c3.yaml"
+external_devices:
+  - id: "thermal_cam"
+    type: "mlx90640"
+    connection: "i2c0"
+    config:
+      i2c_address: 0x33
+      ambient_c: 25.0
+      hot_row: 12
+      hot_col: 16
+      hot_radius: 1
+      hot_target_c: 78.0
+      load: 1.0
+      tau_s: 4.0
+      cooling_efficiency: 0.6
+      frame_period_s: 4.0
+  - id: "iolink_master"
+    type: "iolink-master"
+    connection: "uart1"
+    config:
+      pd_in_len: 9
+      m_seq_type: 1
+      com: "COM2"
+      frame_gap_ticks: 30000
+board_io: []
