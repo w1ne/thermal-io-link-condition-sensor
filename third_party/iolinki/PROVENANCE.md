@@ -1,0 +1,1 @@
+Vendored unmodified from w1ne/iolinki commit 5572a628b8befa6a9c74496311da2359868f96d9. Only headers and the source files required by the L6362A device reference are included. GPL-3.0-or-later/commercial licensing applies; see LICENSE and LICENSE.COMMERCIAL.

@@ -1,0 +1,6 @@
+firmware/.pio/
+firmware/sdkconfig.esp32c3
+engine/
+report*.xml
+*.log
+__pycache__/
