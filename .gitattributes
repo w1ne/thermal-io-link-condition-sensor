@@ -1,0 +1,3 @@
+# Preserve the official Melexis snapshot byte-for-byte, including upstream whitespace.
+third_party/mlx90640-library/functions/*.c -text -whitespace
+third_party/mlx90640-library/headers/*.h -text -whitespace

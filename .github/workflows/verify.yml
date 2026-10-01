@@ -1,30 +1,33 @@
-name: verify
-
-# Re-verifies this build against the open LabWired engine — no proto.cat involved.
+name: source-build-and-regressions
 on:
   push:
   pull_request:
-
 jobs:
-  labwired:
+  classifier:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch the LabWired engine binary (v0.17.3)
-        run: |
-          curl -sSL -o labwired.tar.gz "https://github.com/w1ne/labwired-core/releases/download/v0.17.3/labwired-v0.17.3-linux-x86_64.tar.gz"
-          tar -xzf labwired.tar.gz
-          sudo install -m 0755 labwired /usr/local/bin/labwired
-      - name: Fetch the chip descriptors (v0.17.3)
-        # The binary ships no configs; declarative chips (e.g. esp32c3) need the
-        # configs/{chips,peripherals} tree. sim/system_manifest.yaml points its
-        # chip at ../engine/configs/chips/<id>.yaml.
-        run: git clone --depth 1 --branch v0.17.3 https://github.com/w1ne/labwired-core engine
-      - name: Re-verify the build
-        run: |
-          labwired test \
-            --firmware firmware/firmware.elf \
-            --system sim/system_manifest.yaml \
-            --script sim/test.yaml \
-            --junit report.xml \
-            --no-key
+      - name: Exercise thermal classifier and exact process-data encoder
+        run: tests/run-host.sh
+  firmware:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned PlatformIO
+        run: python -m pip install platformio==6.1.19
+      - name: Build actual ESP-IDF firmware from source
+        run: platformio run -d firmware
+      - name: Archive reproducible CPU and flash images
+        uses: actions/upload-artifact@v4
+        with:
+          name: thermal-esp32c3-firmware
+          include-hidden-files: true
+          if-no-files-found: error
+          path: |
+            firmware/.pio/build/esp32c3/firmware.elf
+            firmware/.pio/build/esp32c3/firmware.bin
+            firmware/.pio/build/esp32c3/bootloader.bin
+            firmware/.pio/build/esp32c3/partitions.bin

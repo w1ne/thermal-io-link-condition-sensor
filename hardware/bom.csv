@@ -1,5 +1,7 @@
-part
-ESP32-C3 SuperMini (RISC-V edge classifier)
-MLX90640 32x24 far-infrared thermal camera (I2C)
-M12 5-pin A-coded IO-Link connector
-24V -> 3V3 buck regulator
+reference,part,quantity,power_or_notes
+MCU,ESP32-C3-DevKitM-1,1,USB powered; target esp32-c3-devkitm-1
+SENSOR,MLX90640 32x24 3.3V I2C breakout,1,ESP32 3V3 supply; check 3.3V pull-ups
+PHY,STEVAL-IOD003V1 with L6362A,1,Existing shield; master L+ supply; IN1 modification required
+CABLE,M12 A-coded IO-Link master cable,1,CN1 pins 1 L+ 3 L- 4 CQ; no direct MCU CQ
+USB,USB supply/programming cable,1,Independent MCU supply; common ground only with PHY
+WIRES,Logic jumper leads,8,Five PHY signals plus sensor SDA SCL and common ground
