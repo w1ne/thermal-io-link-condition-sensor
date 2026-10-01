@@ -32,5 +32,8 @@ int main(void) {
  assert(pd[0]==0x7f && pd[1]==0xff && pd[2]==0x80 && pd[3]==0);
  tfs_init(&c); scene(30); tfs_update(&c,field,16777216.0,&v);
  scene(30); tfs_update(&c,field,16777217.0,&v); assert(v.fault==TFS_FAULT_NONE);
+ tfs_init(&c); for(int i=0;i<TFS_PIXELS;i++) field[i]=-40;
+ tfs_update(&c,field,0,&v);field[0]=300;tfs_update(&c,field,0.0000011,&v);
+ assert(v.health==0 && v.fault==TFS_FAULT_OVERTEMP);
  puts("PASS: thermal normal, warn, overtemperature, cooling, emergence, latched cause, invalid frame/time and 10-byte process data");
 }

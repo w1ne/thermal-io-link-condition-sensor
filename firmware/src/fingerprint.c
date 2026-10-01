@@ -191,7 +191,10 @@ void tfs_update(tfs_ctx_t *ctx, const float *field, double time_s,
     if (margin < 0.0f) margin = 0.0f;       /* at/over critical → none         */
     float rate_pen = rate * 8.0f;           /* °C/s → penalty points           */
     if (rate_pen < 0.0f) rate_pen = 0.0f;
-    int health = (int)(margin * 100.0f - rate_pen + 0.5f);
+    float health_float = margin * 100.0f - rate_pen;
+    if (health_float < 0.0f) health_float = 0.0f;
+    if (health_float > 100.0f) health_float = 100.0f;
+    int health = (int)(health_float + 0.5f);
     if (hot >= TFS_CRITICAL_C) health = 0;  /* OVERTEMP pins health to 0       */
     health = clampi(health, 0, 100);
     out->health = health;
